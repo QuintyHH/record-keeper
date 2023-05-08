@@ -33,7 +33,6 @@ module.exports = {
     'plugin:unicorn/recommended',
     'plugin:regexp/all',
     'plugin:array-func/all',
-    'plugin:testing-library/react',
     'prettier',
   ],
   reportUnusedDisableDirectives: true,
@@ -177,6 +176,9 @@ module.exports = {
       rules: {
         'import/no-default-export': 'off',
         'no-restricted-exports': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'functional/no-try-statement': 'off',
+        'functional/immutable-data': 'off',
       },
     },
   ],

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const assets = []
+const assets = [];
 
 const securityHeaders = [
   {
@@ -31,7 +31,7 @@ const securityHeaders = [
     key: 'Permissions-Policy',
     value: 'geolocation=()',
   },
-]
+];
 
 const getHeader = (asset) => ({
   source: asset,
@@ -41,7 +41,7 @@ const getHeader = (asset) => ({
       value: 'public, immutable, max-age=63072000',
     },
   ],
-})
+});
 
 const nextConfig = {
   swcMinify: true,
@@ -58,7 +58,6 @@ const nextConfig = {
       space: process.env.CONTENTFUL_SPACE_ID,
       key: process.env.CONTENTFUL_ACCESS_TOKEN,
       environment: process.env.CONTENTFUL_ENVIRONMENT,
-      preview: process.env.CONTENTFUL_PREVIEW_TOKEN,
     },
   },
   compiler: {
@@ -74,11 +73,8 @@ const nextConfig = {
   },
 
   headers: async () => {
-    return [
-      ...assets.map((asset) => getHeader(asset)),
-      { source: '/:path*', headers: securityHeaders },
-    ]
+    return [...assets.map((asset) => getHeader(asset)), { source: '/:path*', headers: securityHeaders }];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -22,15 +22,10 @@
       "@features/*": ["src/features/*"],
       "@helpers/*": ["src/helpers/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@customTypes/*": ["src/types/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "types.d.ts",
-    "!babel.config.js",
-    "next.config.js",
-    "src/**/*"
-  ],
+  "include": ["next-env.d.ts", "types.d.ts", "!babel.config.js", "next.config.js", "src/**/*"],
   "exclude": ["node_modules", "reports"]
 }

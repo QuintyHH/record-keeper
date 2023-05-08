@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
 
-const Home: NextPage = () => <div>Test</div>;
+import * as Styled from './home.styles';
+
+const Home: NextPage = () => <Styled.Header>Test</Styled.Header>;
 
 export default Home;
