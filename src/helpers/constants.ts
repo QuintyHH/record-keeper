@@ -23,8 +23,6 @@ export const AspectRatioTypes = {
   UltraWide: '21/9',
 } as const;
 
-export const HttpErrorCodes = [200, 400, 500] as const;
-
 export const ResponseCodes = {
   E1: { httpCode: 500, internalCode: 'E1', message: 'Server Error: Internal Server Error' },
   E2: { httpCode: 200, internalCode: 'E2', message: 'Server Error: No Data available' },
@@ -35,3 +33,5 @@ export const ResponseCodes = {
   T1: { httpCode: 400, internalCode: 'T1', message: 'Server Error: No Token' },
   T2: { httpCode: 400, internalCode: 'T2', message: 'Server Error: Token Incorrect' },
 } as const;
+
+export const HttpErrorCodes = [...new Set(Object.values(ResponseCodes).map((entry) => entry.httpCode))];

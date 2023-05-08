@@ -1,54 +1,70 @@
 import type { NextPage } from 'next';
+import { useCallback, useState } from 'react';
 
 import * as Styled from './home.styles';
-import { fetchConfig } from '@helpers/fetch-config';
-import { useCallback, useState } from 'react';
-import { Record, Vinyl } from '@customTypes/records';
-import { GetRecordResponse } from '@pages/api/get-record.api';
+
+import type { Record, Vinyl } from '@customTypes/records';
+import type { GetRecordResponse } from '@pages/api/get-record.api';
 
 const defaultRecord: Record = { album: '', artist: '', cover: '' };
 
 const Home: NextPage = () => {
   const [currentRecord, setCurrentRecord] = useState<Record>(defaultRecord);
-  const [records, setRecords] = useState<Vinyl[]>([]);
+  const [records, setRecords] = useState<readonly Vinyl[]>([]);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = event.target;
-      setCurrentRecord((prev) => ({ ...prev, [id]: value }));
+      setCurrentRecord((previous) => ({ ...previous, [id]: value }));
     },
     [setCurrentRecord]
   );
-
-  const handleAdd = useCallback(() => {
-    fetch('/api/add-record', {
-      method: 'POST',
-      body: JSON.stringify(currentRecord),
-    }).then(() => {
-      handleGet();
-    });
-  }, [currentRecord]);
 
   const handleGet = useCallback(() => {
     fetch('/api/get-record', {
       method: 'GET',
     })
-      .then((result) => result.json())
+      .then(async (result) => result.json())
       .then((result: GetRecordResponse) => {
         const { values } = result;
-        values && setRecords(values);
+        if (values) {
+          setRecords(values);
+        }
+      })
+      .catch((error: Error) => {
+        console.log(error);
       });
   }, []);
 
-  const handleDelete = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    const currentID = event.target.name;
-    fetch('/api/delete-record', {
+  const handleAdd = useCallback(() => {
+    fetch('/api/add-record', {
+      body: JSON.stringify(currentRecord),
       method: 'POST',
-      body: JSON.stringify(currentID),
-    }).then(() => {
-      handleGet();
-    });
-  }, []);
+    })
+      .then(() => {
+        handleGet();
+      })
+      .catch((error: Error) => {
+        console.log(error);
+      });
+  }, [currentRecord, handleGet]);
+
+  const handleDelete = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      const currentID = event.target.name;
+      fetch('/api/delete-record', {
+        body: JSON.stringify(currentID),
+        method: 'POST',
+      })
+        .then(() => {
+          handleGet();
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
+    },
+    [handleGet]
+  );
 
   return (
     <div>
@@ -56,12 +72,16 @@ const Home: NextPage = () => {
       <div>
         {Object.keys(defaultRecord).map((field) => (
           <div key={field}>
-            <label>{field}</label>
-            <input type="text" onChange={handleChange} id={field} />
+            <label htmlFor={field}>{field}</label>
+            <input id={field} onChange={handleChange} type="text" />
           </div>
         ))}
-        <button onClick={handleAdd}>Add Record</button>
-        <button onClick={handleGet}>Get All Records</button>
+        <button onClick={handleAdd} type="button">
+          Add Record
+        </button>
+        <button onClick={handleGet} type="button">
+          Get All Records
+        </button>
       </div>
       <div>
         {records.map((record) => {
@@ -72,7 +92,8 @@ const Home: NextPage = () => {
               <br />
               <div>Album: {albumName}</div>
               <div>Artist: {artistName}</div>
-              <button name={`${id}`} onClick={handleDelete}>
+              <div>Background: {albumCoverURL}</div>
+              <button name={`${id}`} onClick={handleDelete} type="button">
                 Delete Record
               </button>
               <br />

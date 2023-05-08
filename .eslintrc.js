@@ -133,11 +133,11 @@ module.exports = {
     'react/display-name': 'off',
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/init-declarations': 'off', // Doesn't bring much value, in most of the cases reports variables that should be undefined by default
-    '@typescript-eslint/no-base-to-string': 'off', // false-positive when used in styled components
+    '@typescript-eslint/init-declarations': 'off',
+    '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/no-type-alias': 'off',
-    '@typescript-eslint/prefer-readonly-parameter-types': 'off', // our code is covered by prefer-readonly and overriding definitions coming from external packages are to cumbersome
+    '@typescript-eslint/prefer-readonly-parameter-types': 'off',
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/typedef': 'off',
@@ -169,6 +169,7 @@ module.exports = {
     'unicorn/no-array-for-each': 'off',
     'unicorn/no-null': 'off',
     'unicorn/no-reduce': 'off',
+    'array-func/prefer-array-from': 'off',
   },
   overrides: [
     {
@@ -179,6 +180,12 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
         'functional/no-try-statement': 'off',
         'functional/immutable-data': 'off',
+      },
+    },
+    {
+      files: ['*{_,.}api.ts{,x}'],
+      rules: {
+        'import/no-default-export': 'off',
       },
     },
   ],
